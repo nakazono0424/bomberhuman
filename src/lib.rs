@@ -2,7 +2,6 @@ mod controllers;
 mod game_state;
 mod geometry;
 mod models;
-//mod util;
 
 use std::os::raw::{c_double, c_int};
 
@@ -19,11 +18,6 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub struct GameData {
     state: GameState,
     actions: Actions,
-}
-
-extern "C" {
-    fn clear_screen();
-    fn draw_player(_: c_double, _: c_double);
 }
 
 #[wasm_bindgen]
@@ -55,21 +49,17 @@ impl GameData {
         self.actions.move_left = int_to_bool(b);
     }
 
-    pub fn resize(mut self, width: f64, height: f64) {
-        self = GameData::new(width, height);
-    }
-
-    pub fn x(&mut self) -> f64 {
+    pub fn player_x(&mut self) -> f64 {
         self.state.world.player.x()
     }
 
-    pub fn y(&mut self) -> f64 {
+    pub fn player_y(&mut self) -> f64 {
         self.state.world.player.y()
     }
 
     /*
     pub fn draw(&mut self) {
-        //        use geometry::{Advance, Position};
+        use geometry::{Advance, Position};
 
         clear_screen();
         draw_player(self.state.world.player.x(), self.state.world.player.y());
