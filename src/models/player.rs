@@ -5,6 +5,7 @@ use std::f64;
 
 const ADVANCE_SPEED: f64 = 200.0;
 
+#[derive(Default)]
 pub struct Player {
     pub position: Point,
 }
