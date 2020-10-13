@@ -9,29 +9,12 @@ pub struct Point {
 }
 
 impl Point {
-    /// Returns a new `Point` with the given coordinates
-    pub fn new(x: f64, y: f64) -> Point {
-        Point { x: x, y: y }
-    }
-
     /// Returns a random `Point` within the given bounds (exclusive)
     pub fn random<R: Rng>(rng: &mut R, width: f64, height: f64) -> Point {
         Point {
             x: rng.gen_range(0.0, width),
             y: rng.gen_range(0.0, height),
         }
-    }
-
-    /// Returns the squared distance from this point to the given one
-    pub fn squared_distance_to(&self, target: &Point) -> f64 {
-        (self.x - target.x) * (self.x - target.x) + (self.y - target.y) * (self.y - target.y)
-    }
-
-    /// Translates the point by another point
-    pub fn translate(mut self, other: &Point) -> Point {
-        self.x += other.x;
-        self.y += other.y;
-        self
     }
 }
 
