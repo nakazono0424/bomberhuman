@@ -26,12 +26,12 @@ function resources() {
 const res = resources();
 var ctx = canvas.getContext("2d");
 
-export function clear_screen() {
+function clear_screen() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-export function draw_player(x, y) {
+function draw_player(x, y) {
     ctx.translate(x, y);
     ctx.translate(-20, -20);
     ctx.drawImage(res.player, 0, 0);
