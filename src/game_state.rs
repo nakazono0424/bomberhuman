@@ -1,4 +1,3 @@
-use crate::controllers::Actions;
 use crate::models::World;
 
 pub struct GameState {
@@ -12,9 +11,12 @@ impl GameState {
         }
     }
 
-    pub fn update(&mut self, time: f64, actions: &Actions) {
+    pub fn update(&mut self, time: f64) {
         self.world
-            .player
-            .update(time, actions, self.world.width, self.world.height);
+            .player1
+            .update(time, self.world.width, self.world.height);
+        self.world
+            .player2
+            .update(time, self.world.width, self.world.height);
     }
 }

@@ -8,18 +8,28 @@ let gamedata = GameData.new(canvas.width, canvas.height);
 
 function resources() {
     let res = {
-	player: document.createElement('canvas')
+ 	player1: document.createElement('canvas'),
+ 	player2: document.createElement('canvas')
     }
 
-    //Player
-    res.player.width = 40;
-    res.player.height = 40;
-    let plCtx = res.player.getContext('2d');
-    plCtx.fillStyle = "red";
-    plCtx.beginPath();
-    plCtx.arc(20, 20, 20, 0, 2 * Math.PI);
-    plCtx.fill();
+    //Player1
+    res.player1.width = 40;
+    res.player1.height = 40;
+    let pl1Ctx = res.player1.getContext('2d');
+    pl1Ctx.fillStyle = "red";
+    pl1Ctx.beginPath();
+    pl1Ctx.arc(20, 20, 20, 0, 2 * Math.PI);
+    pl1Ctx.fill();
 
+    //Player2
+    res.player2.width = 40;
+    res.player2.height = 40;
+    let pl2Ctx = res.player2.getContext('2d');
+    pl2Ctx.fillStyle = "yellow";
+    pl2Ctx.beginPath();
+    pl2Ctx.arc(20, 20, 20, 0, 2 * Math.PI);
+    pl2Ctx.fill();
+    
     return res;
 }
 
@@ -31,10 +41,10 @@ function clear_screen() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function draw_player(x, y) {
+function draw_player(player, x, y) {
     ctx.translate(x, y);
     ctx.translate(-20, -20);
-    ctx.drawImage(res.player, 0, 0);
+    ctx.drawImage(player, 0, 0);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     ctx.fillStyle = "black";
@@ -43,16 +53,28 @@ function draw_player(x, y) {
 function processKey(key, b) {
     switch (key) {
     case "ArrowUp":
-	gamedata.toggle_move_up(b);
+	gamedata.toggle_move_up1(b);
 	break;
     case "ArrowDown":
-	gamedata.toggle_move_down(b);
+	gamedata.toggle_move_down1(b);
 	break;
     case "ArrowRight":
-	gamedata.toggle_move_right(b);
+	gamedata.toggle_move_right1(b);
 	break;
     case "ArrowLeft":
-	gamedata.toggle_move_left(b);
+	gamedata.toggle_move_left1(b);
+	break;
+    case "w":
+	gamedata.toggle_move_up2(b);
+	break;
+    case "s":
+	gamedata.toggle_move_down2(b);
+	break;
+    case "d":
+	gamedata.toggle_move_right2(b);
+	break;
+    case "a":
+	gamedata.toggle_move_left2(b);
 	break;
     }
 }
@@ -89,9 +111,13 @@ let drawAndUpdate = (timestamp) => {
 
     // RustでJavaScriptの関数を使用する方法が不明のためとりあえずJS側で処理
     clear_screen();
-    let x = gamedata.player_x();
-    let y = gamedata.player_y();
-    draw_player(x, y);
+    let x1 = gamedata.player1_x();
+    let y1 = gamedata.player1_y();
+    draw_player(res.player1, x1, y1);
+    
+    let x2 = gamedata.player2_x();
+    let y2 = gamedata.player2_y();
+    draw_player(res.player2, x2, y2);
     // gamedata.draw();
 
     //Some bookkeeping

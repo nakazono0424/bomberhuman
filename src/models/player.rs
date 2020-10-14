@@ -8,6 +8,7 @@ const PLAYER_RADIUS: f64 = 20.0;
 #[derive(Default)]
 pub struct Player {
     pub position: Point,
+    pub actions: Actions,
 }
 
 impl Player {
@@ -15,11 +16,12 @@ impl Player {
     pub fn new(width: f64, height: f64) -> Player {
         Player {
             position: Point::new(width, height),
+            actions: Actions::default(),
         }
     }
 
     // キー入力があった場合移動
-    pub fn update(&mut self, dt: f64, actions: &Actions, width: f64, height: f64) {
+    pub fn update(&mut self, dt: f64, width: f64, height: f64) {
         let speed = ADVANCE_SPEED;
 
         // 外枠と衝突したら停止
@@ -32,25 +34,25 @@ impl Player {
         }
 
         // y座標に -dt*speed
-        if actions.move_up {
+        if self.actions.move_up {
             *self.y_mut() -= dt * speed;
             wrap(self.y_mut(), height);
         }
 
         // y座標に +dt*speed
-        if actions.move_down {
+        if self.actions.move_down {
             *self.y_mut() += dt * speed;
             wrap(self.y_mut(), height);
         }
 
         // x座標に +dt*speed
-        if actions.move_right {
+        if self.actions.move_right {
             *self.x_mut() += dt * speed;
             wrap(self.x_mut(), width);
         }
 
         // x座標に -dt*speed
-        if actions.move_left {
+        if self.actions.move_left {
             *self.x_mut() -= dt * speed;
             wrap(self.x_mut(), width);
         }
