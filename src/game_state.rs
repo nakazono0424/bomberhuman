@@ -1,18 +1,14 @@
 use crate::controllers::Actions;
 use crate::models::World;
 
-use pcg_rand::Pcg32Basic;
-use rand::SeedableRng;
-
 pub struct GameState {
     pub world: World,
 }
 
 impl GameState {
     pub fn new(width: f64, height: f64) -> GameState {
-        let mut rng = Pcg32Basic::from_seed([42, 42]);
         GameState {
-            world: World::new(&mut rng, width, height),
+            world: World::new(width, height),
         }
     }
 

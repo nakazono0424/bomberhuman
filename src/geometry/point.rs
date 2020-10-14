@@ -1,4 +1,3 @@
-use rand::Rng;
 use std::ops::{Add, Div, Mul, Sub};
 
 /// A `Point` represents a position in space
@@ -9,11 +8,10 @@ pub struct Point {
 }
 
 impl Point {
-    /// Returns a random `Point` within the given bounds (exclusive)
-    pub fn random<R: Rng>(rng: &mut R, width: f64, height: f64) -> Point {
+    pub fn new(width: f64, height: f64) -> Point {
         Point {
-            x: rng.gen_range(0.0, width),
-            y: rng.gen_range(0.0, height),
+            x: width,
+            y: height,
         }
     }
 }

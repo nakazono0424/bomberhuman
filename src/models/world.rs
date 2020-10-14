@@ -1,5 +1,4 @@
 use crate::models::Player;
-use rand::Rng;
 
 pub struct World {
     pub player: Player,
@@ -8,9 +7,9 @@ pub struct World {
 }
 
 impl World {
-    pub fn new<R: Rng>(rng: &mut R, width: f64, height: f64) -> World {
+    pub fn new(width: f64, height: f64) -> World {
         World {
-            player: Player::random(rng, width, height),
+            player: Player::new(20.0, 20.0),
             width: width,
             height: height,
         }
