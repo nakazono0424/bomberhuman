@@ -1,9 +1,9 @@
 use crate::controllers::Actions;
 use crate::geometry::Point;
-use rand::Rng;
 use std::f64;
 
-const ADVANCE_SPEED: f64 = 200.0;
+const ADVANCE_SPEED: f64 = 400.0;
+const PLAYER_RADIUS: f64 = 20.0;
 
 #[derive(Default)]
 pub struct Player {
@@ -11,10 +11,10 @@ pub struct Player {
 }
 
 impl Player {
-    /// Create a new `Player` with a random position and direction
-    pub fn random<R: Rng>(rng: &mut R, width: f64, height: f64) -> Player {
+    // 特定の座標に Player
+    pub fn new(width: f64, height: f64) -> Player {
         Player {
-            position: Point::random(rng, width, height),
+            position: Point::new(width, height),
         }
     }
 
@@ -22,33 +22,34 @@ impl Player {
     pub fn update(&mut self, dt: f64, actions: &Actions, width: f64, height: f64) {
         let speed = ADVANCE_SPEED;
 
+        // 外枠と衝突したら停止
         fn wrap(k: &mut f64, bound: f64) {
-            if *k < 0.0 {
-                *k += bound;
-            } else if *k >= bound {
-                *k -= bound;
+            if *k - PLAYER_RADIUS < 0.0 {
+                *k = PLAYER_RADIUS;
+            } else if *k + PLAYER_RADIUS > bound {
+                *k = bound - PLAYER_RADIUS;
             }
         }
 
-        // y座標に dt*speed 追加
+        // y座標に -dt*speed
         if actions.move_up {
             *self.y_mut() -= dt * speed;
             wrap(self.y_mut(), height);
         }
 
-        // y座標に -dt*speed 追加
+        // y座標に +dt*speed
         if actions.move_down {
             *self.y_mut() += dt * speed;
             wrap(self.y_mut(), height);
         }
 
-        // x座標に dt*speed 追加
+        // x座標に +dt*speed
         if actions.move_right {
             *self.x_mut() += dt * speed;
             wrap(self.x_mut(), width);
         }
 
-        // x座標に -dt*speed 追加
+        // x座標に -dt*speed
         if actions.move_left {
             *self.x_mut() -= dt * speed;
             wrap(self.x_mut(), width);
