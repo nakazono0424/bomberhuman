@@ -16,14 +16,7 @@
     ```
     $ wasm-pack build
     ```
-
-- Putting it into a Web Page
-  - bomberhuman ディレクトリ内で以下のコマンドを実行する．
-  
-    ```
-    $ npm init wasm-app www
-    ```
-
+    
 - Install the dependencies  
   - `bomberhuman/www/` ディレクトリで以下のコマンドを実行し，依存関係をインストールする．
   
