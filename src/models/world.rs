@@ -1,5 +1,7 @@
 use crate::models::Player;
 
+const SPEED: f64 = 400.0;
+
 pub struct World {
     pub player1: Player,
     pub player2: Player,
@@ -10,8 +12,8 @@ pub struct World {
 impl World {
     pub fn new(width: f64, height: f64) -> World {
         World {
-            player1: Player::new(width - 20.0, height - 20.0),
-            player2: Player::new(20.0, 20.0),
+            player1: Player::new(width - 20.0, height - 20.0, SPEED),
+            player2: Player::new(20.0, 20.0, SPEED),
             width: width,
             height: height,
         }
