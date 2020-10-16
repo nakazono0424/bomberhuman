@@ -8,11 +8,8 @@ pub struct Point {
 }
 
 impl Point {
-    pub fn new(width: f64, height: f64) -> Point {
-        Point {
-            x: width,
-            y: height,
-        }
+    pub fn new(x: f64, y: f64) -> Point {
+        Point { x: x, y: y }
     }
 }
 
