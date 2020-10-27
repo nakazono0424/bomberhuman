@@ -11,36 +11,32 @@ impl CollisionsController {
 
         for player in players {
             for wall in walls {
-                let x_distance = player.x() - wall.x();
-                let y_distance = player.y() - wall.y();
-                if x_distance < GRID && x_distance >= 0.0 {
-                    if y_distance < GRID && y_distance >= 0.0 {
-                        if x_distance.abs() > y_distance.abs() {
-                            *player.x_mut() = wall.x() + GRID;
-                        } else {
-                            *player.y_mut() = wall.y() + GRID;
-                        }
-                    } else if y_distance < 0.0 && y_distance > -GRID {
-                        if x_distance.abs() > y_distance.abs() {
-                            *player.x_mut() = wall.x() + GRID;
-                        } else {
-                            *player.y_mut() = wall.y() - GRID;
-                        }
-                    }
-                } else if x_distance < 0.0 && x_distance > -GRID {
-                    if y_distance < GRID && y_distance >= 0.0 {
-                        if x_distance.abs() > y_distance.abs() {
-                            *player.x_mut() = wall.x() - GRID;
-                        } else {
-                            *player.y_mut() = wall.y() + GRID;
-                        }
-                    } else if y_distance < 0.0 && y_distance > -GRID {
-                        if x_distance.abs() > y_distance.abs() {
-                            *player.x_mut() = wall.x() - GRID;
-                        } else {
-                            *player.y_mut() = wall.y() - GRID;
-                        }
-                    }
+                let px = player.x();
+                let py = player.y();
+                let pr = 20.0;
+                let rx = wall.x();
+                let ry = wall.y();
+                let rr = 20.0;
+                let mut test_x = px;
+                let mut test_y = py;
+                if px < rx - rr {
+                    test_x = rx - rr;
+                }else if px > rx + rr{
+                    test_x =rx + rr;
+                }
+                if py < ry - rr{
+                    test_y = ry - rr;
+                }else if py > ry + rr{
+                    test_y = ry + rr;
+                }
+                let dist_x = px - test_x;
+                let dist_y = py - test_y;
+                let dist = (dist_x*dist_x + dist_y*dist_y).sqrt();
+                if dist <= pr{
+                    let mv_dist_x = dist_x*(pr - dist) / dist;
+                    let mv_dist_y = dist_y*(pr - dist) / dist;
+                    *player.x_mut() = px + mv_dist_x;
+                    *player.y_mut() = py + mv_dist_y;
                 }
             }
         }
