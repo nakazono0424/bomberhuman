@@ -5,4 +5,5 @@ pub struct Actions {
     pub move_down: bool,
     pub move_right: bool,
     pub move_left: bool,
+    pub put_bomb: bool,
 }

@@ -10,10 +10,4 @@ impl GameState {
             world: World::new(width, height),
         }
     }
-
-    pub fn update(&mut self, time: f64) {
-        for player in &mut self.world.players {
-            player.update(time);
-        }
-    }
 }

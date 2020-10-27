@@ -4,6 +4,8 @@
 
 mod collisions;
 mod input;
+mod updater;
 
 pub use self::collisions::CollisionsController;
 pub use self::input::Actions;
+pub use self::updater::Updater;

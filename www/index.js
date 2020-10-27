@@ -16,6 +16,9 @@ function processKey(key, b) {
     case "ArrowLeft":
 	gamedata.toggle_move_left(0, b);
 	break;
+    case " ":
+	gamedata.toggle_put_bomb(0, b);
+	break;
     case "w":
 	gamedata.toggle_move_up(1, b);
 	break;

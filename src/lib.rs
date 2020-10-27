@@ -7,7 +7,7 @@ use std::os::raw::{c_double, c_int};
 
 use wasm_bindgen::prelude::*;
 
-use self::controllers::CollisionsController;
+use self::controllers::{CollisionsController, Updater};
 use self::game_state::GameState;
 
 #[cfg(feature = "wee_alloc")]
@@ -17,6 +17,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 pub struct GameData {
     state: GameState,
+    updater: Updater,
 }
 
 #[wasm_bindgen]
@@ -27,12 +28,15 @@ impl GameData {
         let height: f64 = draw.height();
         GameData {
             state: GameState::new(width, height),
+            updater: Updater::new(),
         }
     }
 
     pub fn update(&mut self, time: c_double) {
-        self.state.update(time);
+        self.updater.update(time, &mut self.state);
         CollisionsController::collisions(&mut self.state);
+        //        for player in &self.state.players {
+        //           LifeController::check(player);
     }
 
     pub fn toggle_move_up(&mut self, i: c_int, b: c_int) {
@@ -49,6 +53,10 @@ impl GameData {
 
     pub fn toggle_move_left(&mut self, i: c_int, b: c_int) {
         self.state.world.players[i as usize].actions.move_left = int_to_bool(b);
+    }
+
+    pub fn toggle_put_bomb(&mut self, i: c_int, b: c_int) {
+        self.state.world.players[i as usize].actions.put_bomb = int_to_bool(b);
     }
 
     pub fn player_x(&mut self, i: c_int) -> f64 {
@@ -68,6 +76,14 @@ impl GameData {
 
         for wall in &self.state.world.walls {
             draw.draw_wall(wall.x(), wall.y());
+        }
+
+        for bomb in &self.state.world.bombs {
+            draw.draw_bomb(bomb.x(), bomb.y());
+        }
+
+        for fire in &self.state.world.fires {
+            draw.draw_fire(fire.x(), fire.y());
         }
 
         for player in &self.state.world.players {
@@ -100,8 +116,12 @@ extern "C" {
     pub fn draw_player(this: &Draw, _: c_int, _: c_double, _: c_double);
 
     #[wasm_bindgen(method)]
-    pub fn draw_player2(this: &Draw, _: c_double, _: c_double);
+    pub fn draw_bomb(this: &Draw, _: c_double, _: c_double);
 
     #[wasm_bindgen(method)]
     pub fn draw_wall(this: &Draw, _: c_double, _: c_double);
+
+    #[wasm_bindgen(method)]
+    pub fn draw_fire(this: &Draw, _: c_double, _: c_double);
+
 }

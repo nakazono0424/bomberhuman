@@ -13,7 +13,9 @@ var ctx = canvas.getContext("2d");
 function resources() {
     let res = {
  	players: [document.createElement('canvas'), document.createElement('canvas')],
-	wall: document.createElement('canvas')
+	wall: document.createElement('canvas'),
+	bomb: document.createElement('canvas'),
+	fire: document.createElement('canvas')
     }
 
     //Player1
@@ -45,7 +47,29 @@ function resources() {
     wallCtx.strokeStyle = "black";
     wallCtx.lineWidth = 2;
     wallCtx.stroke();
-    
+
+    //Bomb
+    res.bomb.width = 40;
+    res.bomb.height = 40;
+    let bombCtx = res.bomb.getContext('2d');
+    bombCtx.fillStyle = "blue";
+    bombCtx.beginPath();
+    bombCtx.arc(20, 20, 20, 0, 2 * Math.PI);
+    bombCtx.fill();
+
+    //Fire
+    res.fire.width = 40;
+    res.fire.height = 40;
+    let fireCtx = res.fire.getContext('2d');
+    fireCtx.beginPath();
+    fireCtx.moveTo(20, 0);
+    fireCtx.lineTo(0, 40);
+    fireCtx.lineTo(40, 40);
+    fireCtx.lineTo(20, 0);
+    fireCtx.closePath();
+    fireCtx.fillStyle = "red";
+    fireCtx.fill();
+
     return res;
 }
 
@@ -73,15 +97,6 @@ export class Draw {
 	
 	ctx.fillStyle = "black";
     }
-    
-    draw_player2(x, y) {
-	ctx.translate(x, y);
-	ctx.translate(-20, -20);
-	ctx.drawImage(res.player[1], 0, 0);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	
-	ctx.fillStyle = "black";
-    }
 
     draw_wall(x, y) {
 	ctx.translate(x, y);
@@ -89,5 +104,21 @@ export class Draw {
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 	ctx.fillStyle = "white";
+    }
+
+    draw_bomb(x, y) {
+	ctx.translate(x, y);
+	ctx.drawImage(res.bomb, -20, -20);
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+	ctx.fillStyle = "blue";
+    }
+
+    draw_fire(x, y) {
+	ctx.translate(x, y);
+	ctx.drawImage(res.fire, -20, -20);
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+	ctx.fillStyle = "red";
     }	
 }
