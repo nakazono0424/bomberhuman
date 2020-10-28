@@ -26,6 +26,7 @@ impl CollisionsController {
                     if dist < pr + 15.0{
                         *player.x_mut() = -20.0;
                         *player.y_mut() = -20.0;
+                        player.bombs_limit = 0;
                     }
                 }
             }
