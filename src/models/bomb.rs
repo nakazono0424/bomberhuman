@@ -1,5 +1,6 @@
 use crate::geometry::Point;
 use crate::models::Fire;
+use crate::models::Wall;
 use std::f64;
 
 #[derive(Default)]
@@ -17,14 +18,69 @@ impl Bomb {
             player_id: pid,
             position: Point::new(player_x, player_y),
             ttl: 3.0,
-            fire_num: 1,
+            fire_num: 3,
         }
     }
 
-    pub fn update(&mut self, dt: f64, fires: &mut Vec<Fire>) {
+    pub fn update(&mut self, dt: f64, fires: &mut Vec<Fire>, walls: &Vec<Wall>) {
         self.ttl -= dt;
         if self.ttl < 0.0 {
-            fires.push(Fire::new(self.x(), self.y(), self.fire_num));
+            self.fire_generate(fires, walls);
+        }
+    }
+
+    fn fire_generate(&mut self, fires: &mut Vec<Fire>, walls: &Vec<Wall>) {
+        let mut counter: i32 = 0;
+        let mut x = self.x();
+        let mut y = self.y();
+        loop {
+            fires.push(Fire::new(x, y));
+            x += 40.0;
+            counter += 1;
+            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
+        }
+        loop {
+            fires.push(Fire::new(x, y));
+            x -= 40.0;
+            counter += 1;
+            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
+        }
+        loop {
+            fires.push(Fire::new(x, y));
+            y += 40.0;
+            counter += 1;
+            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
+        }
+        loop {
+            fires.push(Fire::new(x, y));
+            y -= 40.0;
+            counter += 1;
+            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+                break;
+            }
+        }
+    }
+
+    pub fn check_putable(&mut self, walls: &Vec<Wall>, x: f64, y: f64) -> bool {
+        if walls.iter().any(|wall| wall.x() == x && wall.y() == y) {
+            false
+        } else {
+            true
         }
     }
 

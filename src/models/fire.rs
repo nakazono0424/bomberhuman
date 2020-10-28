@@ -5,15 +5,13 @@ use std::i32;
 pub struct Fire {
     pub position: Point,
     pub ttl: f64,
-    pub fire_num: i32,
 }
 
 impl Fire {
-    pub fn new(x: f64, y: f64, fire_num: i32) -> Fire {
+    pub fn new(x: f64, y: f64) -> Fire {
         Fire {
             position: Point::new(x, y),
-            ttl: 1.0,
-            fire_num: 1,
+            ttl: 2.0,
         }
     }
 

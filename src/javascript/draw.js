@@ -14,6 +14,7 @@ function resources() {
     let res = {
  	players: [document.createElement('canvas'), document.createElement('canvas')],
 	wall: document.createElement('canvas'),
+	sblock: document.createElement('canvas'),
 	bomb: document.createElement('canvas'),
 	fire: document.createElement('canvas')
     }
@@ -47,6 +48,18 @@ function resources() {
     wallCtx.strokeStyle = "black";
     wallCtx.lineWidth = 2;
     wallCtx.stroke();
+
+    // SoftBlock
+    res.sblock.width = 40.0;
+    res.sblock.height = 40.0;
+    let sblockCtx = res.sblock.getContext('2d');
+    sblockCtx.beginPath();
+    sblockCtx.rect(0, 0, 40, 40);
+    sblockCtx.fillStyle = "gray";
+    sblockCtx.fill();
+    sblockCtx.strokeStyle = "black";
+    sblockCtx.lineWidth = 2;
+    sblockCtx.stroke();
 
     //Bomb
     res.bomb.width = 40;
@@ -104,6 +117,14 @@ export class Draw {
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 	ctx.fillStyle = "white";
+    }
+
+    draw_sblock(x, y) {
+	ctx.translate(x, y);
+	ctx.drawImage(res.sblock, -20, -20);
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+	ctx.fillStyle = "gray";
     }
 
     draw_bomb(x, y) {
