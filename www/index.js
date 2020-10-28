@@ -1,5 +1,7 @@
 import { GameData } from "bomber-human-test";
 
+const debug = true
+
 let gamedata = GameData.new();
 
 function processKey(key, b) {
@@ -34,6 +36,12 @@ function processKey(key, b) {
     case "b":
 	gamedata.toggle_put_bomb(1, b);
 	break;
+    case "0":
+    gamedata.delete_wall(debug);
+    break;
+    case "9":
+    gamedata.delete_sblock(debug);
+    break;
     }
 }
 
