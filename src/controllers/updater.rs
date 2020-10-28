@@ -1,8 +1,6 @@
 use std::f64;
 
 use crate::game_state::GameState;
-use crate::geometry::Point;
-use crate::models::{Bomb, Player, Wall};
 
 /// Timers to handle creation of bullets, enemies and particles
 pub struct Updater {

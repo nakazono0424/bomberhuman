@@ -1,6 +1,5 @@
 use crate::geometry::Point;
 use std::f64;
-use std::i32;
 
 pub struct Fire {
     pub position: Point,

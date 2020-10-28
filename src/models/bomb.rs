@@ -99,9 +99,6 @@ impl Bomb {
         loop {
             fires.push(Fire::new(x, y));
             if self.check_sblocks(sblocks, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
                 break;
             }
             y -= 40.0;

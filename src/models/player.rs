@@ -14,13 +14,13 @@ pub struct Player {
 
 impl Player {
     // 特定の座標に Player
-    pub fn new(id: i32, x: f64, y: f64, init_speed: f64) -> Player {
+    pub fn new(id: i32, x: f64, y: f64, speed: f64, bomb_limit :i32) -> Player {
         Player {
             id: id,
             position: Point::new(x, y),
             actions: Actions::default(),
-            speed: init_speed,
-            bombs_limit: 3,
+            speed: speed,
+            bombs_limit: bomb_limit,
         }
     }
 
