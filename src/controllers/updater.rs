@@ -21,6 +21,7 @@ impl Updater {
     pub fn update(&mut self, dt: f64, state: &mut GameState) {
         self.current_time += dt;
 
+        // Update players
         for player in &mut state.world.players {
             player.update(dt, &mut state.world.bombs);
         }
@@ -30,7 +31,15 @@ impl Updater {
             bomb.update(dt, &mut state.world.fires);
         }
 
+        //Update fire
+        for fire in &mut state.world.fires {
+            fire.update(dt);
+        }
+
         // Remove old bombs
         state.world.bombs.retain(|bomb| bomb.ttl > 0.0);
+
+        // Remove old fires
+        state.world.fires.retain(|fire| fire.ttl > 0.0);
     }
 }
