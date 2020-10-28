@@ -1,6 +1,5 @@
 use crate::geometry::Point;
-use crate::models::Fire;
-use crate::models::Wall;
+use crate::models::{Fire, SoftBlock, Wall};
 use std::f64;
 
 #[derive(Default)]
@@ -24,22 +23,39 @@ impl Bomb {
         }
     }
 
-    pub fn update(&mut self, dt: f64, fires: &mut Vec<Fire>, walls: &Vec<Wall>) {
+    pub fn update(
+        &mut self,
+        dt: f64,
+        fires: &mut Vec<Fire>,
+        walls: &Vec<Wall>,
+        sblocks: &Vec<SoftBlock>,
+    ) {
         self.ttl -= dt;
         if self.ttl < 0.0 {
-            self.fire_generate(fires, walls);
+            self.fire_generate(fires, walls, sblocks);
         }
     }
 
-    fn fire_generate(&mut self, fires: &mut Vec<Fire>, walls: &Vec<Wall>) {
+    fn fire_generate(
+        &mut self,
+        fires: &mut Vec<Fire>,
+        walls: &Vec<Wall>,
+        sblocks: &Vec<SoftBlock>,
+    ) {
         let mut counter: i32 = 0;
         let mut x = self.x();
         let mut y = self.y();
         loop {
             fires.push(Fire::new(x, y));
+            if self.check_sblocks(sblocks, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
             x += 40.0;
             counter += 1;
-            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+            if counter == self.fire_num || self.check_walls(walls, x, y) {
                 counter = 0;
                 x = self.x();
                 y = self.y();
@@ -48,9 +64,15 @@ impl Bomb {
         }
         loop {
             fires.push(Fire::new(x, y));
+            if self.check_sblocks(sblocks, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
             x -= 40.0;
             counter += 1;
-            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+            if counter == self.fire_num || self.check_walls(walls, x, y) {
                 counter = 0;
                 x = self.x();
                 y = self.y();
@@ -59,9 +81,15 @@ impl Bomb {
         }
         loop {
             fires.push(Fire::new(x, y));
+            if self.check_sblocks(sblocks, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
             y += 40.0;
             counter += 1;
-            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+            if counter == self.fire_num || self.check_walls(walls, x, y) {
                 counter = 0;
                 x = self.x();
                 y = self.y();
@@ -70,22 +98,38 @@ impl Bomb {
         }
         loop {
             fires.push(Fire::new(x, y));
+            if self.check_sblocks(sblocks, x, y) {
+                counter = 0;
+                x = self.x();
+                y = self.y();
+                break;
+            }
             y -= 40.0;
             counter += 1;
-            if counter == self.fire_num || !self.check_putable(walls, x, y) {
+            if counter == self.fire_num || self.check_walls(walls, x, y) {
                 break;
             }
         }
     }
 
-    pub fn check_putable(&mut self, walls: &Vec<Wall>, x: f64, y: f64) -> bool {
+    pub fn check_walls(&mut self, walls: &Vec<Wall>, x: f64, y: f64) -> bool {
         if walls.iter().any(|wall| wall.x() == x && wall.y() == y) {
-            false
-        } else {
             true
+        } else {
+            false
         }
     }
 
+    pub fn check_sblocks(&mut self, sblocks: &Vec<SoftBlock>, x: f64, y: f64) -> bool {
+        if sblocks
+            .iter()
+            .any(|sblock| sblock.x() == x && sblock.y() == y)
+        {
+            true
+        } else {
+            false
+        }
+    }
     pub fn x(&self) -> f64 {
         self.position.x
     }

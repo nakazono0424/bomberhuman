@@ -3,12 +3,10 @@ mod game_state;
 mod geometry;
 mod models;
 
-use std::os::raw::{c_double, c_int};
-
-use wasm_bindgen::prelude::*;
-
 use self::controllers::{CollisionsController, Updater};
 use self::game_state::GameState;
+use std::os::raw::{c_double, c_int};
+use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]

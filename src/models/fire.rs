@@ -11,7 +11,7 @@ impl Fire {
     pub fn new(x: f64, y: f64) -> Fire {
         Fire {
             position: Point::new(x, y),
-            ttl: 2.0,
+            ttl: 1.0,
         }
     }
 
