@@ -2,6 +2,8 @@ use crate::geometry::Point;
 use crate::models::{Fire, SoftBlock, Wall};
 use std::f64;
 
+const GRID: f64 = 40.0;
+
 #[derive(Default)]
 pub struct Bomb {
     pub player_id: i32,
@@ -45,66 +47,31 @@ impl Bomb {
         let mut counter: i32 = 0;
         let mut x = self.x();
         let mut y = self.y();
-        loop {
-            fires.push(Fire::new(x, y));
-            if self.check_sblocks(sblocks, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-            x += 40.0;
-            counter += 1;
-            if counter == self.fire_num || self.check_walls(walls, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-        }
-        loop {
-            fires.push(Fire::new(x, y));
-            if self.check_sblocks(sblocks, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-            x -= 40.0;
-            counter += 1;
-            if counter == self.fire_num || self.check_walls(walls, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-        }
-        loop {
-            fires.push(Fire::new(x, y));
-            if self.check_sblocks(sblocks, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-            y += 40.0;
-            counter += 1;
-            if counter == self.fire_num || self.check_walls(walls, x, y) {
-                counter = 0;
-                x = self.x();
-                y = self.y();
-                break;
-            }
-        }
-        loop {
-            fires.push(Fire::new(x, y));
-            if self.check_sblocks(sblocks, x, y) {
-                break;
-            }
-            y -= 40.0;
-            counter += 1;
-            if counter == self.fire_num || self.check_walls(walls, x, y) {
-                break;
+        fires.push(Fire::new(x, y));
+        for i in (0..4) {
+            loop {
+                if i == 0 {
+                    x = self.x() + GRID * counter as f64;
+                } else if i == 1 {
+                    x = self.x() - GRID * counter as f64;
+                } else if i == 2 {
+                    y = self.y() + GRID * counter as f64;
+                } else if i == 3 {
+                    y = self.y() - GRID * counter as f64;
+                }
+                if self.check_walls(walls, x, y) {
+                    x = self.x();
+                    y = self.y();
+                    break;
+                }
+                fires.push(Fire::new(x, y));
+                counter += 1;
+                if self.check_sblocks(sblocks, x, y) || counter == self.fire_num {
+                    counter = 1;
+                    x = self.x();
+                    y = self.y();
+                    break;
+                }
             }
         }
     }
