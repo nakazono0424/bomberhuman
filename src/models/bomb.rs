@@ -8,6 +8,7 @@ pub struct Bomb {
     pub position: Point,
     pub ttl: f64,
     pub fire_num: i32,
+    pub on_player: bool,
 }
 
 impl Bomb {
@@ -18,6 +19,7 @@ impl Bomb {
             position: Point::new(player_x, player_y),
             ttl: 3.0,
             fire_num: 1,
+            on_player: true,
         }
     }
 
