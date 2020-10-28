@@ -31,6 +31,9 @@ function processKey(key, b) {
     case "a":
 	gamedata.toggle_move_left(1, b);
 	break;
+    case "b":
+	gamedata.toggle_put_bomb(1, b);
+	break;
     }
 }
 

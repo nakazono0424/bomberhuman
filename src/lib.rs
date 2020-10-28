@@ -35,8 +35,6 @@ impl GameData {
     pub fn update(&mut self, time: c_double) {
         self.updater.update(time, &mut self.state);
         CollisionsController::collisions(&mut self.state);
-        //        for player in &self.state.players {
-        //           LifeController::check(player);
     }
 
     pub fn toggle_move_up(&mut self, i: c_int, b: c_int) {
@@ -76,6 +74,10 @@ impl GameData {
 
         for wall in &self.state.world.walls {
             draw.draw_wall(wall.x(), wall.y());
+        }
+
+        for sblock in &self.state.world.sblocks {
+            draw.draw_sblock(sblock.x(), sblock.y());
         }
 
         for bomb in &self.state.world.bombs {
@@ -124,4 +126,6 @@ extern "C" {
     #[wasm_bindgen(method)]
     pub fn draw_fire(this: &Draw, _: c_double, _: c_double);
 
+    #[wasm_bindgen(method)]
+    pub fn draw_sblock(this: &Draw, _: c_double, _: c_double);
 }

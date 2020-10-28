@@ -28,7 +28,7 @@ impl Updater {
 
         // Update bombs
         for bomb in &mut state.world.bombs {
-            bomb.update(dt, &mut state.world.fires);
+            bomb.update(dt, &mut state.world.fires, &state.world.walls);
         }
 
         //Update fire
