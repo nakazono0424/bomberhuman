@@ -1,7 +1,9 @@
 use crate::models::{Bomb, Fire, Player, SoftBlock, Wall};
+use rand::Rng;
 
 const SPEED: f64 = 200.0;
 const GRID: f64 = 40.0;
+const NUM_OF_DELETE_SBLOCK :usize = 30;
 
 pub struct World {
     pub players: Vec<Player>,
@@ -32,6 +34,7 @@ impl World {
     pub fn soft_block_generate(width: f64, height: f64) -> Vec<SoftBlock> {
         let mut sblock = vec![];
         let mut i = 60.0;
+        let mut rng = rand::thread_rng();
         loop {
             let mut j = 60.0;
             if i == 60.0 || i == height - 60.0 {
@@ -83,7 +86,12 @@ impl World {
                 break;
             }
         }
+        for i in 0..NUM_OF_DELETE_SBLOCK {
+            let a :usize = rng.gen_range(0, sblock.len());
+            sblock.swap_remove(a);
+        }
         sblock
+
     }
 
     pub fn wall_generate(width: f64, height: f64) -> Vec<Wall> {
