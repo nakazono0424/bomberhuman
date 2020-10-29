@@ -136,15 +136,7 @@ impl CollisionsController {
                     bomb.ttl = 0.0;
                 }
             }
-
-            if let Some((index, position_x, position_y)) = sblocks
-                .iter()
-                .enumerate()
-                .find(|&(_, sblock)| sblock.x() == fire.x() && sblock.y() == fire.y())
-                .map(|(index, sblock)| (index, sblock.x(), sblock.y()))
-            {
-                sblocks.remove(index);
-            }
+            sblocks.retain(|sblock| sblock.x() != fire.x() || sblock.y() != fire.y());
         }
     }
 }

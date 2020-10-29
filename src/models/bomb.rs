@@ -48,7 +48,6 @@ impl Bomb {
         let mut x = self.x();
         let mut y = self.y();
         fires.push(Fire::new(x, y));
-
         for i in (0..4) {
             loop {
                 if i == 0 {

@@ -2,6 +2,7 @@ use crate::models::{Bomb, Fire, Player, SoftBlock, Wall};
 use rand::Rng;
 
 const SPEED: f64 = 200.0;
+const BOMB_LIMIT :i32 = 3;
 const GRID: f64 = 40.0;
 const NUM_OF_DELETE_SBLOCK :usize = 30;
 
@@ -19,8 +20,8 @@ impl World {
     pub fn new(width: f64, height: f64) -> World {
         World {
             players: vec![
-                Player::new(0, width - 60.0, height - 60.0, SPEED),
-                Player::new(1, 60.0, 60.0, SPEED),
+                Player::new(0, width - 60.0, height - 60.0, SPEED, BOMB_LIMIT),
+                Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
             ],
             walls: World::wall_generate(width, height),
             sblocks: World::soft_block_generate(width, height),
@@ -86,9 +87,9 @@ impl World {
                 break;
             }
         }
-        for i in 0..NUM_OF_DELETE_SBLOCK {
+        for _i in 0..NUM_OF_DELETE_SBLOCK {
             let a :usize = rng.gen_range(0, sblock.len());
-            sblock.swap_remove(a);
+            sblock.remove(a);
         }
         sblock
 

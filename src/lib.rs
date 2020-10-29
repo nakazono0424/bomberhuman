@@ -90,6 +90,19 @@ impl GameData {
             draw.draw_player(player.id, player.x(), player.y());
         }
     }
+
+    // for debug
+    pub fn delete_wall(&mut self, b :bool){
+        if b {
+            self.state.world.walls.clear();
+        }
+    }
+
+    pub fn delete_sblock(&mut self, b :bool){
+        if b {
+            self.state.world.sblocks.clear();
+        }
+    }
 }
 
 fn int_to_bool(i: c_int) -> bool {
