@@ -60,6 +60,7 @@ impl Bomb {
                     y = self.y() - GRID * counter as f64;
                 }
                 if self.check_walls(walls, x, y) {
+                    counter = 1;
                     x = self.x();
                     y = self.y();
                     break;
