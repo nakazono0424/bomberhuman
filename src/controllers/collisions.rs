@@ -44,9 +44,9 @@ impl CollisionsController {
                     if dist < pr + 20.0 {
                         if bomb.on_player && player.id == bomb.player_id {
                             bomb.on_player = true;
-                        } else {
-                            if dist == 0.0 {
-                                dist = 1.01;
+                        }else{
+                            if dist == 0.0{
+                                dist = 1.0;
                             }
                             let mv_x = dist_x * (pr + 20.0 - dist) / dist;
                             let mv_y = dist_y * (pr + 20.0 - dist) / dist;
@@ -85,10 +85,10 @@ impl CollisionsController {
                     }
                     let dist_x = px - test_x;
                     let dist_y = py - test_y;
-                    let mut dist = (dist_x * dist_x + dist_y * dist_y).sqrt();
-                    if dist <= pr {
-                        if dist == 0.0 {
-                            dist = 1.01;
+                    let mut dist = (dist_x*dist_x + dist_y*dist_y).sqrt();
+                    if dist <= pr{
+                        if dist == 0.0{
+                            dist = 1.0;
                         }
                         let mv_dist_x = dist_x * (pr - dist) / dist;
                         let mv_dist_y = dist_y * (pr - dist) / dist;
