@@ -1,13 +1,15 @@
 use crate::geometry::Point;
 
 pub struct SoftBlock {
-    position: Point,
+    pub position: Point,
+    pub item_id: i32,
 }
 
 impl SoftBlock {
-    pub fn new(x: f64, y: f64) -> SoftBlock {
+    pub fn new(x: f64, y: f64, item_id: i32) -> SoftBlock {
         SoftBlock {
             position: Point::new(x, y),
+            item_id: item_id,
         }
     }
 

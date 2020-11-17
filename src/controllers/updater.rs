@@ -31,6 +31,7 @@ impl Updater {
                 &mut state.world.fires,
                 &state.world.walls,
                 &state.world.sblocks,
+                &state.world.items,
             );
         }
 

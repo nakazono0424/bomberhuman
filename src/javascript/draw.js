@@ -12,31 +12,30 @@ var ctx = canvas.getContext("2d");
 
 function resources() {
     let res = {
- 	players: [document.createElement('canvas'), document.createElement('canvas')],
+ 	players: [new Object(), new Object(), new Object(), new Object()],
 	wall: document.createElement('canvas'),
 	sblock: document.createElement('canvas'),
-	bomb: document.createElement('canvas'),
-	fire: document.createElement('canvas')
+	bomb: new Object(),
+	fire: new Object(),
+	items: [new Object(), new Object(), new Object()]
     }
 
     //Player1
-    res.players[0].width = 40;
-    res.players[0].height = 40;
-    let pl1Ctx = res.players[0].getContext('2d');
-    pl1Ctx.fillStyle = "red";
-    pl1Ctx.beginPath();
-    pl1Ctx.arc(20, 20, 20, 0, 2 * Math.PI);
-    pl1Ctx.fill();
+    res.players[0].img = new Image();
+    res.players[0].img.src = 'figs/pipo-charachip001.png';
 
     //Player2
-    res.players[1].width = 40;
-    res.players[1].height = 40;
-    let pl2Ctx = res.players[1].getContext('2d');
-    pl2Ctx.fillStyle = "yellow";
-    pl2Ctx.beginPath();
-    pl2Ctx.arc(20, 20, 20, 0, 2 * Math.PI);
-    pl2Ctx.fill();
+    res.players[1].img = new Image();
+    res.players[1].img.src = 'figs/pipo-charachip002.png';
 
+    //Player3
+    res.players[2].img = new Image();
+    res.players[2].img.src = 'figs/pipo-charachip003.png';
+
+    //Player4
+    res.players[3].img = new Image();
+    res.players[3].img.src = 'figs/pipo-charachip004.png';
+    
     //Wall
     res.wall.width = 40;
     res.wall.height = 40;
@@ -50,38 +49,28 @@ function resources() {
     wallCtx.stroke();
 
     // SoftBlock
-    res.sblock.width = 40.0;
-    res.sblock.height = 40.0;
-    let sblockCtx = res.sblock.getContext('2d');
-    sblockCtx.beginPath();
-    sblockCtx.rect(0, 0, 40, 40);
-    sblockCtx.fillStyle = "gray";
-    sblockCtx.fill();
-    sblockCtx.strokeStyle = "black";
-    sblockCtx.lineWidth = 2;
-    sblockCtx.stroke();
+    res.sblock.img = new Image();
+    res.sblock.img.src = 'figs/maptips/mini/pipo-map001.png';
 
     //Bomb
-    res.bomb.width = 40;
-    res.bomb.height = 40;
-    let bombCtx = res.bomb.getContext('2d');
-    bombCtx.fillStyle = "blue";
-    bombCtx.beginPath();
-    bombCtx.arc(20, 20, 20, 0, 2 * Math.PI);
-    bombCtx.fill();
+    res.bomb.img = new Image();
+    res.bomb.img.src = 'figs/bombs/bomb.png';
 
     //Fire
-    res.fire.width = 40;
-    res.fire.height = 40;
-    let fireCtx = res.fire.getContext('2d');
-    fireCtx.beginPath();
-    fireCtx.moveTo(20, 0);
-    fireCtx.lineTo(0, 40);
-    fireCtx.lineTo(40, 40);
-    fireCtx.lineTo(20, 0);
-    fireCtx.closePath();
-    fireCtx.fillStyle = "red";
-    fireCtx.fill();
+    res.fire.img = new Image();
+    res.fire.img.src = 'figs/bombs/bomb.png';
+
+    // Item0 bomb
+    res.items[0].img = new Image();
+    res.items[0].img.src = 'figs/items/bomb.png';
+
+    // Item1 fire
+    res.items[1].img = new Image();
+    res.items[1].img.src = 'figs/items/fire.png';
+
+    // Item2 speed
+    res.items[2].img = new Image();
+    res.items[2].img.src = 'figs/items/speed.png';
 
     return res;
 }
@@ -98,17 +87,12 @@ export class Draw {
     }
     
     clear_screen() {
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "green";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    draw_player(i, x, y) {
-	ctx.translate(x, y);
-	ctx.translate(-20, -20);
-	ctx.drawImage(res.players[i], 0, 0);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	
-	ctx.fillStyle = "black";
+    draw_player(i, x, y, rect_x, rect_y) {
+	ctx.drawImage(res.players[i].img, rect_x, rect_y, 32, 32, x-20, y-20, 40, 40);
     }
 
     draw_wall(x, y) {
@@ -120,26 +104,18 @@ export class Draw {
     }
 
     draw_sblock(x, y) {
-	ctx.translate(x, y);
-	ctx.drawImage(res.sblock, -20, -20);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-	ctx.fillStyle = "gray";
+	ctx.drawImage(res.sblock.img, 128, 32, 32, 32, x-20, y-20, 40, 40);
     }
 
-    draw_bomb(x, y) {
-	ctx.translate(x, y);
-	ctx.drawImage(res.bomb, -20, -20);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-	ctx.fillStyle = "blue";
+    draw_bomb(i, x, y, condition) {
+	ctx.drawImage(res.bomb.img, condition * 32, i * 32, 32, 32, x-20, y-20, 40, 40);
     }
 
-    draw_fire(x, y) {
-	ctx.translate(x, y);
-	ctx.drawImage(res.fire, -20, -20);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
+    draw_fire(i, x, y, condition) {
+	ctx.drawImage(res.fire.img, condition * 32, i * 32 + 160, 32, 32, x-20, y-20, 40, 40);
+    }
 
-	ctx.fillStyle = "red";
-    }	
+    draw_item(i, x, y) {
+	ctx.drawImage(res.items[i].img, x-20, y-20, 40, 40);
+    }
 }

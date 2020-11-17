@@ -33,8 +33,38 @@ function processKey(key, b) {
     case "a":
 	gamedata.toggle_move_left(1, b);
 	break;
-    case "b":
+    case "x":
 	gamedata.toggle_put_bomb(1, b);
+	break;
+    case "t":
+	gamedata.toggle_move_up(2, b);
+	break;
+    case "g":
+	gamedata.toggle_move_down(2, b);
+	break;
+    case "h":
+	gamedata.toggle_move_right(2, b);
+	break;
+    case "f":
+	gamedata.toggle_move_left(2, b);
+	break;
+    case "b":
+	gamedata.toggle_put_bomb(2, b);
+	break;
+    case "i":
+	gamedata.toggle_move_up(3, b);
+	break;
+    case "k":
+	gamedata.toggle_move_down(3, b);
+	break;
+    case "l":
+	gamedata.toggle_move_right(3, b);
+	break;
+    case "j":
+	gamedata.toggle_move_left(3, b);
+	break;
+    case ",":
+	gamedata.toggle_put_bomb(3, b);
 	break;
     case "0":
     gamedata.delete_wall(debug);

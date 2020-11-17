@@ -1,4 +1,5 @@
 use crate::game_state::GameState;
+use crate::models::Item;
 
 pub struct CollisionsController;
 
@@ -9,6 +10,7 @@ impl CollisionsController {
         let walls = &state.world.walls;
         let bombs = &mut state.world.bombs;
         let sblocks = &state.world.sblocks;
+        let items = &mut state.world.items;
 
         // Player の衝突判定
         for player in players {
@@ -18,14 +20,14 @@ impl CollisionsController {
                 let pr = 20.0;
                 let fx = fire.x();
                 let fy = fire.y();
-                if (fx > px - 50.0) && (fx < px + 50.0) &&
-                    (fy > py - 50.0) && (fy < py + 50.0){
+                if (fx > px - 50.0) && (fx < px + 50.0) && (fy > py - 50.0) && (fy < py + 50.0) {
                     let dist_x = px - fx;
                     let dist_y = py - fy;
-                    let dist = (dist_x*dist_x + dist_y*dist_y).sqrt();
-                    if dist < pr + 15.0{
+                    let dist = (dist_x * dist_x + dist_y * dist_y).sqrt();
+                    if dist < pr + 15.0 {
                         *player.x_mut() = -20.0;
                         *player.y_mut() = -20.0;
+                        player.bombs_limit = 0;
                     }
                 }
             }
@@ -35,16 +37,15 @@ impl CollisionsController {
                 let pr = 20.0;
                 let bx = bomb.x();
                 let by = bomb.y();
-                if (bx > px - 50.0) && (bx < px + 50.0) &&
-                    (by > py - 50.0) && (by < py + 50.0){
+                if (bx > px - 50.0) && (bx < px + 50.0) && (by > py - 50.0) && (by < py + 50.0) {
                     let dist_x = px - bx;
                     let dist_y = py - by;
-                    let mut dist = (dist_x*dist_x + dist_y*dist_y).sqrt();
-                    if dist < pr + 20.0{
-                        if bomb.on_player && player.id == bomb.player_id{
+                    let mut dist = (dist_x * dist_x + dist_y * dist_y).sqrt();
+                    if dist < pr + 20.0 {
+                        if bomb.on_player && player.id == bomb.player_id {
                             bomb.on_player = true;
-                        }else{
-                            if dist == 0.0{
+                        } else {
+                            if dist == 0.0 {
                                 dist = 1.01;
                             }
                             let mv_x = dist_x * (pr + 20.0 - dist) / dist;
@@ -52,9 +53,9 @@ impl CollisionsController {
                             *player.x_mut() = px + mv_x;
                             *player.y_mut() = py + mv_y;
                         }
-                    }else{
+                    } else {
                         if bomb.on_player {
-                            if player.id == bomb.player_id{
+                            if player.id == bomb.player_id {
                                 bomb.on_player = false;
                             }
                         }
@@ -84,19 +85,19 @@ impl CollisionsController {
                     }
                     let dist_x = px - test_x;
                     let dist_y = py - test_y;
-                    let mut dist = (dist_x*dist_x + dist_y*dist_y).sqrt();
-                    if dist <= pr{
-                        if dist == 0.0{
+                    let mut dist = (dist_x * dist_x + dist_y * dist_y).sqrt();
+                    if dist <= pr {
+                        if dist == 0.0 {
                             dist = 1.01;
                         }
-                        let mv_dist_x = dist_x*(pr - dist) / dist;
-                        let mv_dist_y = dist_y*(pr - dist) / dist;
+                        let mv_dist_x = dist_x * (pr - dist) / dist;
+                        let mv_dist_y = dist_y * (pr - dist) / dist;
                         *player.x_mut() = px + mv_dist_x;
                         *player.y_mut() = py + mv_dist_y;
                     }
                 }
             }
-            // Wall との衝突判定
+            // sblock との衝突判定
             for sblock in sblocks {
                 let px = player.x();
                 let py = player.y();
@@ -128,12 +129,38 @@ impl CollisionsController {
                     }
                 }
             }
+
+            // items との衝突判定
+            for item in &mut *items {
+                if (player.x() - item.x()).abs() < 5.0 && (player.y() - item.y()).abs() < 5.0 {
+                    if item.item_id == 1 {
+                        // ボム
+                        player.bombs_limit += 1;
+                    } else if item.item_id == 2 {
+                        // 火力
+                        player.fire += 1;
+                    } else if item.item_id == 3 {
+                        // 速度
+                        player.speed += 20.0;
+                    }
+                }
+            }
+            items.retain(|item| {
+                (item.x() - player.x()).abs() >= 5.0 || (item.y() - player.y()).abs() >= 5.0
+            });
         }
+
         let sblocks = &mut state.world.sblocks;
+
         for fire in fires {
             for bomb in &mut *bombs {
                 if fire.x() == bomb.x() && fire.y() == bomb.y() {
                     bomb.ttl = 0.0;
+                }
+            }
+            for sblock in &mut *sblocks {
+                if fire.x() == sblock.x() && fire.y() == sblock.y() && sblock.item_id != 0 {
+                    items.push(Item::new(sblock.x(), sblock.y(), sblock.item_id));
                 }
             }
             sblocks.retain(|sblock| sblock.x() != fire.x() || sblock.y() != fire.y());

@@ -79,26 +79,36 @@ impl GameData {
         }
 
         for bomb in &self.state.world.bombs {
-            draw.draw_bomb(bomb.x(), bomb.y());
+            draw.draw_bomb(bomb.player_id, bomb.x(), bomb.y(), bomb.condition);
+        }
+
+        for item in &self.state.world.items {
+            draw.draw_item(item.item_id - 1, item.x(), item.y());
         }
 
         for fire in &self.state.world.fires {
-            draw.draw_fire(fire.x(), fire.y());
+            draw.draw_fire(fire.player_id, fire.x(), fire.y(), fire.condition);
         }
 
         for player in &self.state.world.players {
-            draw.draw_player(player.id, player.x(), player.y());
+            draw.draw_player(
+                player.id,
+                player.x(),
+                player.y(),
+                player.rect_x,
+                player.rect_y,
+            );
         }
     }
 
     // for debug
-    pub fn delete_wall(&mut self, b :bool){
+    pub fn delete_wall(&mut self, b: bool) {
         if b {
             self.state.world.walls.clear();
         }
     }
 
-    pub fn delete_sblock(&mut self, b :bool){
+    pub fn delete_sblock(&mut self, b: bool) {
         if b {
             self.state.world.sblocks.clear();
         }
@@ -126,17 +136,19 @@ extern "C" {
     pub fn clear_screen(this: &Draw);
 
     #[wasm_bindgen(method)]
-    pub fn draw_player(this: &Draw, _: c_int, _: c_double, _: c_double);
+    pub fn draw_player(this: &Draw, _: c_int, _: c_double, _: c_double, _: c_int, _: c_int);
 
     #[wasm_bindgen(method)]
-    pub fn draw_bomb(this: &Draw, _: c_double, _: c_double);
+    pub fn draw_bomb(this: &Draw, _: c_int, _: c_double, _: c_double, _: c_int);
+
+    #[wasm_bindgen(method)]
+    pub fn draw_item(this: &Draw, _: c_int, _: c_double, _: c_double);
 
     #[wasm_bindgen(method)]
     pub fn draw_wall(this: &Draw, _: c_double, _: c_double);
 
     #[wasm_bindgen(method)]
-    pub fn draw_fire(this: &Draw, _: c_double, _: c_double);
-
+    pub fn draw_fire(this: &Draw, _: c_int, _: c_double, _: c_double, _: c_int);
     #[wasm_bindgen(method)]
     pub fn draw_sblock(this: &Draw, _: c_double, _: c_double);
 }
