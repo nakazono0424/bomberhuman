@@ -14,6 +14,7 @@ pub struct Player {
     pub walk_count: f64,
     pub bombs_limit: i32,
     pub fire: i32,
+    pub live: bool,
 }
 
 impl Player {
@@ -29,11 +30,16 @@ impl Player {
             walk_count: 0.0,
             bombs_limit: bomb_limit,
             fire: 1,
+            live: true,
         }
     }
 
     // キー入力があった場合移動
     pub fn update(&mut self, dt: f64, bombs: &mut Vec<Bomb>) {
+        if !self.live {
+            return;
+        }
+
         // y座標に -dt*speed
         if self.actions.move_up {
             *self.y_mut() -= dt * self.speed;

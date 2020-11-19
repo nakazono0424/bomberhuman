@@ -101,9 +101,7 @@ impl CollisionsController {
                 *player.x_mut() = -20.0;
                 *player.y_mut() = -20.0;
                 player.bombs_limit = 0;
-                player.speed = 0.0;
-                player.fire = 0;
-                player.live = false;
+		loop 
             }
         }
     }

@@ -33,7 +33,7 @@ impl Bomb {
         fires: &mut Vec<Fire>,
         walls: &Vec<Wall>,
         sblocks: &Vec<SoftBlock>,
-        items: &Vec<Item>,
+        items: &mut Vec<Item>,
     ) {
         self.ttl -= dt;
         if self.ttl < 2.0 {
@@ -58,7 +58,7 @@ impl Bomb {
         fires: &mut Vec<Fire>,
         walls: &Vec<Wall>,
         sblocks: &Vec<SoftBlock>,
-        items: &Vec<Item>,
+        items: &mut Vec<Item>,
     ) {
         let mut counter: i32 = 0;
         let mut x = self.x();
@@ -87,6 +87,7 @@ impl Bomb {
                     || self.check_items(items, x, y)
                     || counter == self.fire_num
                 {
+                    items.retain(|item| item.x() != x || item.y() != y);
                     counter = 0;
                     x = self.x();
                     y = self.y();

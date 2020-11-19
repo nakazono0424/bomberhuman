@@ -1,6 +1,4 @@
 # bomberhuman
-# 現状
-- プレイヤーを表示し，矢印キーの入力で操作する．
 
 # Install and Setup
 - clone
@@ -29,3 +27,6 @@
   ```
   $ npm run start
   ```
+
+# Credit
+- 画像は[ぴぽや倉庫](https://pipoya.net/sozai/)さんのものを使わせていただいています．
