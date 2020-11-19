@@ -3,7 +3,6 @@ use rand::seq::SliceRandom;
 
 const SPEED: f64 = 200.0;
 const BOMB_LIMIT: i32 = 1;
-const GRID: f64 = 40.0;
 
 pub struct World {
     pub players: Vec<Player>,
@@ -14,11 +13,13 @@ pub struct World {
     pub items: Vec<Item>,
     pub width: f64,
     pub height: f64,
+    pub time: f64,
 }
 
 impl World {
     pub fn new(width: f64, height: f64) -> World {
         let mut map = [
+            // 0 = No SoftBlock, 1 = Wall, 2 = SoftBlock(Random)
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 1],
             [1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 1],
@@ -92,10 +93,10 @@ impl World {
 
         World {
             players: vec![
-                Player::new(0, width - 60.0, height - 60.0, SPEED, BOMB_LIMIT),
+                Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT),
                 Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
-                Player::new(2, width - 60.0, 60.0, SPEED, BOMB_LIMIT),
-                Player::new(3, 60.0, height - 60.0, SPEED, BOMB_LIMIT),
+                Player::new(2, 540.0, 60.0, SPEED, BOMB_LIMIT),
+                Player::new(3, 60.0, 460.0, SPEED, BOMB_LIMIT),
             ],
             walls: wall,
             sblocks: soft_block,
@@ -104,6 +105,7 @@ impl World {
             items: vec![],
             width: width,
             height: height,
+            time: 180.0,
         }
     }
 }

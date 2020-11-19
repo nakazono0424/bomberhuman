@@ -2,22 +2,22 @@ use std::f64;
 
 use crate::game_state::GameState;
 
-/// Timers to handle creation of bullets, enemies and particles
-pub struct Updater {
-    /// A random number generator
-    current_time: f64,
-}
+pub struct Updater;
 
 impl Updater {
-    pub fn new() -> Updater {
-        Updater { current_time: 0.0 }
-    }
-
     /// Updates the game
     ///
     /// `dt` is the amount of seconds that have passed since the last update
-    pub fn update(&mut self, dt: f64, state: &mut GameState) {
-        self.current_time += dt;
+    pub fn update(dt: f64, state: &mut GameState) {
+        if state.world.time < 0.0 || !state.status {
+            state.status = false;
+            return;
+        }
+
+        // Update time
+        if state.world.time > 0.0 {
+            state.world.time -= dt;
+        }
 
         // Update players
         for player in &mut state.world.players {
@@ -31,7 +31,7 @@ impl Updater {
                 &mut state.world.fires,
                 &state.world.walls,
                 &state.world.sblocks,
-                &state.world.items,
+                &mut state.world.items,
             );
         }
 

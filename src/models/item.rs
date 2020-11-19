@@ -1,8 +1,6 @@
 use crate::geometry::Point;
 use std::f64;
 
-const GRID: f64 = 40.0;
-
 #[derive(Default)]
 pub struct Item {
     pub item_id: i32,

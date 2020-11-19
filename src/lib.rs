@@ -15,7 +15,6 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 pub struct GameData {
     state: GameState,
-    updater: Updater,
 }
 
 #[wasm_bindgen]
@@ -26,12 +25,11 @@ impl GameData {
         let height: f64 = draw.height();
         GameData {
             state: GameState::new(width, height),
-            updater: Updater::new(),
         }
     }
 
     pub fn update(&mut self, time: c_double) {
-        self.updater.update(time, &mut self.state);
+        Updater::update(time, &mut self.state);
         CollisionsController::collisions(&mut self.state);
     }
 
@@ -53,14 +51,6 @@ impl GameData {
 
     pub fn toggle_put_bomb(&mut self, i: c_int, b: c_int) {
         self.state.world.players[i as usize].actions.put_bomb = int_to_bool(b);
-    }
-
-    pub fn player_x(&mut self, i: c_int) -> f64 {
-        self.state.world.players[i as usize].x()
-    }
-
-    pub fn player_y(&mut self, i: c_int) -> f64 {
-        self.state.world.players[i as usize].y()
     }
 
     pub fn draw(&mut self) {
@@ -98,6 +88,29 @@ impl GameData {
                 player.rect_x,
                 player.rect_y,
             );
+            draw.draw_status(player.id, player.speed, player.bombs_limit, player.fire);
+        }
+
+        draw.draw_time(
+            self.state.world.time as i32 / 60,
+            self.state.world.time as i32 % 60 / 10,
+            self.state.world.time as i32 % 60 % 10,
+        );
+
+        if self
+            .state
+            .world
+            .players
+            .iter()
+            .filter(|&player| player.live == true)
+            .count()
+            == 1
+        {
+            self.state.status = false;
+            let winner = self.state.world.players.iter().find(|&player| player.live);
+            draw.draw_end(winner.unwrap().id + 1);
+        } else if !self.state.status {
+            draw.draw_end(0);
         }
     }
 
@@ -151,4 +164,12 @@ extern "C" {
     pub fn draw_fire(this: &Draw, _: c_int, _: c_double, _: c_double, _: c_int);
     #[wasm_bindgen(method)]
     pub fn draw_sblock(this: &Draw, _: c_double, _: c_double);
+
+    #[wasm_bindgen(method)]
+    pub fn draw_time(this: &Draw, _: c_int, _: c_int, _: c_int);
+
+    #[wasm_bindgen(method)]
+    pub fn draw_status(this: &Draw, _: c_int, _: c_double, _: c_int, _: c_int);
+    #[wasm_bindgen(method)]
+    pub fn draw_end(this: &Draw, _: c_int);
 }

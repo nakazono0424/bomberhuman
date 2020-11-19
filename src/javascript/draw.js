@@ -3,7 +3,7 @@ const GAMEDATA_WIDTH = 15;
 const GAMEDATA_HEIGHT = 13;
 
 const canvas = document.getElementById("bomberhuman");
-canvas.width = GAMEDATA_WIDTH * GLID_SIZE;
+canvas.width = GAMEDATA_WIDTH * GLID_SIZE + 300;
 canvas.height = GAMEDATA_HEIGHT * GLID_SIZE;
 canvas.style.position = "absolute";
 canvas.style.left = "100px";
@@ -14,7 +14,7 @@ function resources() {
     let res = {
  	players: [new Object(), new Object(), new Object(), new Object()],
 	wall: document.createElement('canvas'),
-	sblock: document.createElement('canvas'),
+	sblock: new Object(),
 	bomb: new Object(),
 	fire: new Object(),
 	items: [new Object(), new Object(), new Object()]
@@ -22,19 +22,19 @@ function resources() {
 
     //Player1
     res.players[0].img = new Image();
-    res.players[0].img.src = 'figs/pipo-charachip001.png';
+    res.players[0].img.src = 'image/pipo-charachip001.png';
 
     //Player2
     res.players[1].img = new Image();
-    res.players[1].img.src = 'figs/pipo-charachip002.png';
+    res.players[1].img.src = 'image/pipo-charachip002.png';
 
     //Player3
     res.players[2].img = new Image();
-    res.players[2].img.src = 'figs/pipo-charachip003.png';
+    res.players[2].img.src = 'image/pipo-charachip003.png';
 
     //Player4
     res.players[3].img = new Image();
-    res.players[3].img.src = 'figs/pipo-charachip004.png';
+    res.players[3].img.src = 'image/pipo-charachip004.png';
     
     //Wall
     res.wall.width = 40;
@@ -50,27 +50,27 @@ function resources() {
 
     // SoftBlock
     res.sblock.img = new Image();
-    res.sblock.img.src = 'figs/maptips/mini/pipo-map001.png';
+    res.sblock.img.src = 'image/pipo-map001.png';
 
     //Bomb
     res.bomb.img = new Image();
-    res.bomb.img.src = 'figs/bombs/bomb.png';
+    res.bomb.img.src = 'image/bomb.png';
 
     //Fire
     res.fire.img = new Image();
-    res.fire.img.src = 'figs/bombs/bomb.png';
+    res.fire.img.src = 'image/bomb.png';
 
     // Item0 bomb
     res.items[0].img = new Image();
-    res.items[0].img.src = 'figs/items/bomb.png';
+    res.items[0].img.src = 'image/bomb_up.png';
 
     // Item1 fire
     res.items[1].img = new Image();
-    res.items[1].img.src = 'figs/items/fire.png';
+    res.items[1].img.src = 'image/power_up.png';
 
     // Item2 speed
     res.items[2].img = new Image();
-    res.items[2].img.src = 'figs/items/speed.png';
+    res.items[2].img.src = 'image/speed_up.png';
 
     return res;
 }
@@ -117,5 +117,36 @@ export class Draw {
 
     draw_item(i, x, y) {
 	ctx.drawImage(res.items[i].img, x-20, y-20, 40, 40);
+    }
+
+    draw_time(minutes, second1, second2) {
+	ctx.font = "48px serif";
+	ctx.textAlign = "left";
+	ctx.fillText("残り時間 " + minutes + ":" + second1 + second2, 650, 100, 200);
+    }
+
+    draw_status(id, speed, bomb, fire) {
+	ctx.drawImage(res.players[id].img, 0, 0, 32, 32, 650, 150 + id * 70, 60, 60);
+	ctx.font = "20px serif";
+	ctx.textAlign = "left";
+	ctx.fillText("SPEED: " + speed, 720, 170 + id * 70);
+	ctx.fillText("BOMB: " + bomb, 720, 190 + id * 70);
+	ctx.fillText("POWER: " + fire, 720, 210 + id * 70);
+    }
+
+    draw_end(id) {
+	ctx.fillStyle = "white";
+	ctx.font = "80px serif";
+	ctx.strokeStyle = "black";
+	ctx.textAlign = "center";
+	if(id == 0) {
+	    ctx.fillText("Draw", 450, 250);
+	    ctx.strokeText("Draw", 450, 250);
+	} else {
+	    ctx.fillText("Winner", 450, 250);
+	    ctx.fillText("Player" + id, 450, 350);
+	    ctx.strokeText("Winner", 450, 250);
+	    ctx.strokeText("Player" + id, 450, 350);
+	}
     }
 }
