@@ -103,11 +103,12 @@ let drawAndUpdate = (timestamp) => {
 	    console.log(gamepad);
 
 	    var buttons = gamepad.buttons;
+	    var axes = gamepad.axes;
 
-	    gamedata.toggle_move_up(i, buttons[12].pressed);
-	    gamedata.toggle_move_down(i, buttons[13].pressed);
-	    gamedata.toggle_move_left(i, buttons[14].pressed);
-	    gamedata.toggle_move_right(i, buttons[15].pressed);
+	    gamedata.toggle_move_up(i, buttons[12].pressed || axes[1] < -0.3);
+	    gamedata.toggle_move_down(i, buttons[13].pressed || axes[1] > 0.3);
+	    gamedata.toggle_move_left(i, buttons[14].pressed || axes[0] < -0.3);
+	    gamedata.toggle_move_right(i, buttons[15].pressed || axes[0] > 0.3);
 	    gamedata.toggle_put_bomb(i, buttons[1].pressed);
 	}
     }
