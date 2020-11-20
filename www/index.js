@@ -75,38 +75,6 @@ function processKey(key, b) {
     }
 }
 
-function scan_gamepad_input(){
-    if (navigator.getGamepads()) {
-        var gamepads = navigator.Gamepads
-        var gp = gamepads[0]
-        if (buttonPressed(gp.button[0])){
-            gamedata.toggle_move_up(0, true);
-        }else {
-            gamedata.toggle_move_up(0, false);
-        }
-        if (buttonPressed(gp.button[1])){
-            gamedata.toggle_move_right(0, true);
-        }else {
-            gamedata.toggle_move_right(0, false);
-        }
-        if (buttonPressed(gp.button[2])){
-            gamedata.toggle_move_down(0, true);
-        }else {
-            gamedata.toggle_move_down(0, false);
-        }
-        if (buttonPressed(gp.button[3])){
-            gamedata.toggle_move_left(0, true);
-        }else {
-            gamedata.toggle_move_left(0, false);
-        }
-        if (buttonPressed(gp.button[4])){
-            gamedata.toggle_put_bomb(0, true);
-        }else {
-            gamedata.toggle_put_bomb(0, false);
-        }
-    }
-}
-
 document.addEventListener('keydown', e => processKey(e.key, true));
 document.addEventListener('keyup', e => processKey(e.key, false));
 //document.addEventListener("gamepadconnected", e => init_gamepads(e.gamepad));
@@ -123,7 +91,6 @@ let drawAndUpdate = (timestamp) => {
 	return;
     }
 
-    
     if(navigator.getGamepads) {
 	var gamepad_list = navigator.getGamepads();
 
@@ -145,10 +112,8 @@ let drawAndUpdate = (timestamp) => {
 	}
     }
 
-
     //Update and draw
     let progress = (timestamp - prevTimestamp) / 1000;
-    scan_gamepad_input();
     gamedata.update(progress);
 
     gamedata.draw();
