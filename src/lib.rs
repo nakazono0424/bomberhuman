@@ -109,7 +109,17 @@ impl GameData {
             self.state.status = false;
             let winner = self.state.world.players.iter().find(|&player| player.live);
             draw.draw_end(winner.unwrap().id + 1);
-        } else if !self.state.status {
+        } else if !self.state.status
+            || self
+                .state
+                .world
+                .players
+                .iter()
+                .filter(|&player| player.live == true)
+                .count()
+                == 0
+        {
+            self.state.status = false;
             draw.draw_end(0);
         }
     }

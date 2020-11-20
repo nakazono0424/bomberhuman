@@ -13,7 +13,7 @@ var ctx = canvas.getContext("2d");
 function resources() {
     let res = {
  	players: [new Object(), new Object(), new Object(), new Object()],
-	wall: document.createElement('canvas'),
+	wall: new Object(),
 	sblock: new Object(),
 	bomb: new Object(),
 	fire: new Object(),
@@ -37,20 +37,12 @@ function resources() {
     res.players[3].img.src = 'image/pipo-charachip004.png';
     
     //Wall
-    res.wall.width = 40;
-    res.wall.height = 40;
-    let wallCtx = res.wall.getContext('2d');
-    wallCtx.beginPath;
-    wallCtx.rect(0, 0, 40, 40);
-    wallCtx.fillStyle = "white";
-    wallCtx.fill();
-    wallCtx.strokeStyle = "black";
-    wallCtx.lineWidth = 2;
-    wallCtx.stroke();
+    res.wall.img = new Image();
+    res.wall.img.src = 'image/wall.png';
 
     // SoftBlock
     res.sblock.img = new Image();
-    res.sblock.img.src = 'image/pipo-map001.png';
+    res.sblock.img.src = 'image/takarabako.png';
 
     //Bomb
     res.bomb.img = new Image();
@@ -96,15 +88,11 @@ export class Draw {
     }
 
     draw_wall(x, y) {
-	ctx.translate(x, y);
-	ctx.drawImage(res.wall, -20, -20);
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-	ctx.fillStyle = "white";
+	ctx.drawImage(res.wall.img, 0, 0, 16, 16, x-20, y-20, 40, 40);
     }
 
     draw_sblock(x, y) {
-	ctx.drawImage(res.sblock.img, 128, 32, 32, 32, x-20, y-20, 40, 40);
+	ctx.drawImage(res.sblock.img, 0, 16, 16, 16, x-20, y-20, 40, 40);
     }
 
     draw_bomb(i, x, y, condition) {
@@ -120,6 +108,7 @@ export class Draw {
     }
 
     draw_time(minutes, second1, second2) {
+	ctx.fillStyle = "white";
 	ctx.font = "48px serif";
 	ctx.textAlign = "left";
 	ctx.fillText("残り時間 " + minutes + ":" + second1 + second2, 650, 100, 200);
@@ -127,6 +116,7 @@ export class Draw {
 
     draw_status(id, speed, bomb, fire) {
 	ctx.drawImage(res.players[id].img, 0, 0, 32, 32, 650, 150 + id * 70, 60, 60);
+	ctx.fillStyle = "white";
 	ctx.font = "20px serif";
 	ctx.textAlign = "left";
 	ctx.fillText("SPEED: " + speed, 720, 170 + id * 70);
