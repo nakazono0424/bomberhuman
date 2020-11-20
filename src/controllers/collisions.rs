@@ -44,13 +44,17 @@ impl CollisionsController {
 
             // items との衝突判定
             for item in &mut *items {
-                if (player.x() - item.x()).abs() < 10.0 && (player.y() - item.y()).abs() < 10.0 {
+                if (player.x() - item.x()).abs() < 20.0 && (player.y() - item.y()).abs() < 20.0 {
                     if item.item_id == 1 {
                         // ボム
-                        player.bombs_limit += 1;
+                        if player.bombs_limit < 5 {
+                            player.bombs_limit += 1;
+                        }
                     } else if item.item_id == 2 {
                         // 火力
-                        player.fire += 1;
+                        if player.fire < 5 {
+                            player.fire += 1;
+                        }
                     } else if item.item_id == 3 {
                         // 速度
                         player.speed += 20.0;
@@ -60,7 +64,7 @@ impl CollisionsController {
 
             // Player と接触した Item を消去
             items.retain(|item| {
-                (item.x() - player.x()).abs() >= 10.0 || (item.y() - player.y()).abs() >= 10.0
+                (item.x() - player.x()).abs() >= 20.0 || (item.y() - player.y()).abs() >= 20.0
             });
         }
     }

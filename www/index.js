@@ -123,6 +123,29 @@ let drawAndUpdate = (timestamp) => {
 	return;
     }
 
+    
+    if(navigator.getGamepads) {
+	var gamepad_list = navigator.getGamepads();
+
+	var num = gamepad_list.length;
+
+	var i;
+	for(i=0; i<num; i++) {
+	    var gamepad = gamepad_list[i];
+	    if(!gamepad) continue;
+	    console.log(gamepad);
+
+	    var buttons = gamepad.buttons;
+
+	    gamedata.toggle_move_up(i, buttons[12].pressed);
+	    gamedata.toggle_move_down(i, buttons[13].pressed);
+	    gamedata.toggle_move_left(i, buttons[14].pressed);
+	    gamedata.toggle_move_right(i, buttons[15].pressed);
+	    gamedata.toggle_put_bomb(i, buttons[1].pressed);
+	}
+    }
+
+
     //Update and draw
     let progress = (timestamp - prevTimestamp) / 1000;
     scan_gamepad_input();

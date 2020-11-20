@@ -1,7 +1,7 @@
 use crate::models::{Bomb, Fire, Item, Player, SoftBlock, Wall};
 use rand::seq::SliceRandom;
 
-const SPEED: f64 = 200.0;
+const SPEED: f64 = 100.0;
 const BOMB_LIMIT: i32 = 1;
 
 pub struct World {
