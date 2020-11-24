@@ -88,7 +88,13 @@ impl GameData {
                 player.rect_x,
                 player.rect_y,
             );
-            draw.draw_status(player.id, player.speed, player.bombs_limit, player.fire);
+            draw.draw_status(
+                player.live,
+                player.id,
+                player.speed,
+                player.bombs_limit,
+                player.fire,
+            );
         }
 
         draw.draw_time(
@@ -179,7 +185,7 @@ extern "C" {
     pub fn draw_time(this: &Draw, _: c_int, _: c_int, _: c_int);
 
     #[wasm_bindgen(method)]
-    pub fn draw_status(this: &Draw, _: c_int, _: c_double, _: c_int, _: c_int);
+    pub fn draw_status(this: &Draw, _: bool, _: c_int, _: c_double, _: c_int, _: c_int);
     #[wasm_bindgen(method)]
     pub fn draw_end(this: &Draw, _: c_int);
 }
