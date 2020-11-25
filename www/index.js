@@ -77,12 +77,12 @@ let gamedata = GameData.new();
 
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
-        up = key1;
-        left = key2;
-        down = key3;
-        right = key4;
-        put_bomb = key5;
-        player_num = num;
+        var up = key1;
+        var left = key2;
+        var down = key3;
+        var right = key4;
+        var put_bomb = key5;
+        var player_num = num;
     }
     scan(){
         for (key of put_keys){
@@ -91,17 +91,17 @@ class Key {
             }else{
                 gamedata.toggle_move_up(player_num, false);
             }
-             if (key == left){
+            if (key == left){
                 gamedata.toggle_move_left(player_num, true);
             }else{
                 gamedata.toggle_move_left(player_num, false);
             }
-             if (key == down){
+            if (key == down){
                 gamedata.toggle_move_down(player_num, true);
             }else{
                 gamedata.toggle_move_down(player_num, false);
             }
-             if (key == right){
+            if (key == right){
                 gamedata.toggle_move_right(player_num, true);
             }else{
                 gamedata.toggle_move_right(player_num, false);
@@ -115,23 +115,23 @@ class Key {
     }
 }
 
-function pushKey(put_keys, key){
-    put_keys.push(key);
+function pushKey(keys, key){
+    keys.push(key);
 }
-function popKey(put_keys, key){
-    pup_keys[put_keys.indexOf(key)] = put_keys[put_keys.length];
-    put_keys.pop;
+function popKey(keys, key){
+    keys[keys.indexOf(key)] = keys[keys.length];
+    keys.pop;
 }
 
 var put_keys = [];
 var key_bind = [];
-key_bind[0] = new constructor("ArrowUp","ArrowLeft","ArrowDown","ArrowRight"," ",0);
-key_bind[1] = new constructor("w","a","s","d","x",1);
-key_bind[2] = new constructor("t","f","g","h","b",2);
-key_bind[3] = new constructor("i","j","k","l",",",3);
+key_bind[0] = new Key("ArrowUp","ArrowLeft","ArrowDown","ArrowRight"," ",0);
+key_bind[1] = new Key("w","a","s","d","x",1);
+key_bind[2] = new Key("t","f","g","h","b",2);
+key_bind[3] = new Key("i","j","k","l",",",3);
 
-document.addEventListener('keydown', e => pushKey(put_keys, e.key);
-document.addEventListener('keyup', e => popKey(put_keys, e.key);
+document.addEventListener('keydown', e => pushKey(put_keys, e.key));
+document.addEventListener('keyup', e => popKey(put_keys, e.key));
 if (debug){
     document.addEventListener("gamepadconnected", e => init_gamepads(e.gamepad));
 }
@@ -148,13 +148,13 @@ let drawAndUpdate = (timestamp) => {
 	    return;
     }
 
-	var num = gamepad_list.length;
 	var i;
-    for i in 0..3 {
+    for (i = 0; i < 4; i++) {
         key_bind[i].scan;
     }
     if(navigator.getGamepads) {
 	    var gamepad_list = navigator.getGamepads();
+	    var num = gamepad_list.length;
 	    for(i=0; i<num; i++) {
 	        var gamepad = gamepad_list[i];
 	        if(!gamepad) continue;
