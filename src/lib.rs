@@ -19,12 +19,12 @@ pub struct GameData {
 
 #[wasm_bindgen]
 impl GameData {
-    pub fn new() -> GameData {
+    pub fn new(num_of_player: i32) -> GameData {
         let draw = Draw::new();
         let width: f64 = draw.width();
         let height: f64 = draw.height();
         GameData {
-            state: GameState::new(width, height),
+            state: GameState::new(width, height, num_of_player),
         }
     }
 

@@ -2,7 +2,13 @@ import { GameData } from "bomber-human-test";
 
 const debug = false
 
-let gamedata = GameData.new();
+var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
+
+if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
+    num_of_player = 4;
+}
+
+let gamedata = GameData.new(num_of_player);
 
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
@@ -54,7 +60,7 @@ let drawAndUpdate = (timestamp) => {
     }
 
     var i;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < num_of_player; i++) {
         key_bind[i].scan(put_keys);
     }
     if(navigator.getGamepads) {
