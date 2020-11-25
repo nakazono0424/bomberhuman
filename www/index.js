@@ -14,42 +14,21 @@ class Key {
         this.player_num = num;
     }
     scan(keys){
-        for (var key of keys){
-            if (key == this.up){
-                gamedata.toggle_move_up(this.player_num, true);
-            }else{
-                gamedata.toggle_move_up(this.player_num, false);
-            }
-            if (key == this.left){
-                gamedata.toggle_move_left(this.player_num, true);
-            }else{
-                gamedata.toggle_move_left(this.player_num, false);
-            }
-            if (key == this.down){
-                gamedata.toggle_move_down(this.player_num, true);
-            }else{
-                gamedata.toggle_move_down(this.player_num, false);
-            }
-            if (key == this.right){
-                gamedata.toggle_move_right(this.player_num, true);
-            }else{
-                gamedata.toggle_move_right(this.player_num, false);
-            }
-            if (key == this.put_bomb){
-                gamedata.toggle_put_bomb(this.player_num, true);
-            }else{
-                gamedata.toggle_put_bomb(this.player_num, false);
-            }
-        }
+        gamedata.toggle_move_up(this.player_num, keys.some(e => e === this.up));
+        gamedata.toggle_move_left(this.player_num, keys.some(e => e === this.left));
+        gamedata.toggle_move_down(this.player_num, keys.some(e => e === this.down));
+	gamedata.toggle_move_right(this.player_num, keys.some(e => e === this.right));
+        gamedata.toggle_put_bomb(this.player_num, keys.some(e => e === this.put_bomb));
     }
 }
 
-function pushKey(keys, key){
-    keys.push(key);
+function pushKey(keys, key, repeat){
+    if(!repeat) {
+	keys.push(key);
+    }
 }
 function popKey(keys, key){
-    keys[keys.indexOf(key)] = keys[keys.length];
-    keys.pop;
+    put_keys = keys.filter(e => e !== key);
 }
 
 var put_keys = [];
@@ -59,11 +38,8 @@ key_bind[1] = new Key("w","a","s","d","x",1);
 key_bind[2] = new Key("t","f","g","h","b",2);
 key_bind[3] = new Key("i","j","k","l",",",3);
 
-document.addEventListener('keydown', e => pushKey(put_keys, e.key));
+document.addEventListener('keydown', e => pushKey(put_keys, e.key, e.repeat));
 document.addEventListener('keyup', e => popKey(put_keys, e.key));
-if (debug){
-    document.addEventListener("gamepadconnected", e => init_gamepads(e.gamepad));
-}
 
 //Gameloop
 let start = null;
@@ -77,7 +53,7 @@ let drawAndUpdate = (timestamp) => {
 	    return;
     }
 
-	var i;
+    var i;
     for (i = 0; i < 4; i++) {
         key_bind[i].scan(put_keys);
     }
