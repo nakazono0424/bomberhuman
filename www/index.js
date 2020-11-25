@@ -2,13 +2,7 @@ import { GameData } from "bomber-human-test";
 
 const debug = false
 
-var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
-
-if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
-    num_of_player = 4;
-}
-
-let gamedata = GameData.new(num_of_player);
+let gamedata = GameData.new(3);
 
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
@@ -100,14 +94,34 @@ let drawAndUpdate = (timestamp) => {
     requestAnimationFrame(drawAndUpdate);
 };
 
+var num_of_player = 4;
 var continueFlag = true
 window.main = function(){
     if (continueFlag){
+        if (document.getElementById("radio1").checked){
+            num_of_player = 2;
+        }
+        if (document.getElementById("radio2").checked){
+            num_of_player = 3;
+        }
+        if (document.getElementById("radio3").checked){
+            num_of_player = 4;
+        }
+        gamedata = GameData.new(num_of_player);
         drawAndUpdate();
         continueFlag = false;
     }
 }
 
 window.reset = function(){
-    gamedata = GameData.new();
+    if (document.getElementById("radio1").checked){
+        num_of_player = 2;
+    }
+    if (document.getElementById("radio2").checked){
+        num_of_player = 3;
+    }
+    if (document.getElementById("radio3").checked){
+        num_of_player = 4;
+    }
+    gamedata = GameData.new(num_of_player);
 }
