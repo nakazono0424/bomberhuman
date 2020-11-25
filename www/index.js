@@ -48,7 +48,7 @@ let drawAndUpdate = (timestamp) => {
     if(navigator.getGamepads) {
 	    var gamepad_list = navigator.getGamepads();
 	    var num = gamepad_list.length;
-	    for(i=0; i<num; i++) {
+	    for(i=0; i<num_of_player; i++) {
 	        var gamepad = gamepad_list[i];
 	        if(!gamepad) continue;
 	        console.log(gamepad);
