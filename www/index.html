@@ -17,6 +17,13 @@
   <body>
     <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
     <canvas id="bomberhuman"></canvas>
+    <form name="form">
+        <input type="radio" name="radio" value=2 > 2
+        <input type="radio" name="radio" value=3 > 3
+        <input type="radio" name="radio" value=4 checked> 4
+    </form>
     <script src="./bootstrap.js"></script>
+    <input type="button" value="start" onclick="main();"/>
+    <input type="button" value="reset" onclick="reset();"/>
   </body>
 </html>

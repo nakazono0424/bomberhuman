@@ -17,7 +17,7 @@ class Key {
         gamedata.toggle_move_up(this.player_num, keys.some(e => e === this.up));
         gamedata.toggle_move_left(this.player_num, keys.some(e => e === this.left));
         gamedata.toggle_move_down(this.player_num, keys.some(e => e === this.down));
-	gamedata.toggle_move_right(this.player_num, keys.some(e => e === this.right));
+	    gamedata.toggle_move_right(this.player_num, keys.some(e => e === this.right));
         gamedata.toggle_put_bomb(this.player_num, keys.some(e => e === this.put_bomb));
     }
 }
@@ -94,4 +94,14 @@ let drawAndUpdate = (timestamp) => {
     requestAnimationFrame(drawAndUpdate);
 };
 
-drawAndUpdate();
+var continueFlag = true
+window.main = function(){
+    if (continueFlag){
+        drawAndUpdate();
+        continueFlag = false;
+    }
+}
+
+window.reset = function(){
+    gamedata = GameData.new();
+}
