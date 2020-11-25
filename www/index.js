@@ -4,10 +4,12 @@ const debug = false
 
 var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
 
-if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
+console.log(num_of_player);
+if(num_of_player != "2" && num_of_player != "3" && num_of_player != "4"){
     num_of_player = 4;
 }
 
+console.log(num_of_player);
 let gamedata = GameData.new(num_of_player);
 
 class Key {
