@@ -17,7 +17,8 @@ function resources() {
 	sblock: new Object(),
 	bomb: new Object(),
 	fire: new Object(),
-	items: [new Object(), new Object(), new Object()]
+	items: [new Object(), new Object(), new Object()],
+	pien: new Object()
     }
 
     //Player1
@@ -63,6 +64,10 @@ function resources() {
     // Item2 speed
     res.items[2].img = new Image();
     res.items[2].img.src = 'image/speed_up.png';
+
+    // Pien
+    res.pien.img = new Image();
+    res.pien.img.src = 'image/pien.png';
 
     return res;
 }
@@ -114,8 +119,14 @@ export class Draw {
 	ctx.fillText("残り時間 " + minutes + ":" + second1 + second2, 650, 100, 200);
     }
 
-    draw_status(id, speed, bomb, fire) {
+    draw_status(live, id, speed, bomb, fire) {
 	ctx.drawImage(res.players[id].img, 0, 0, 32, 32, 650, 150 + id * 70, 60, 60);
+	if(!live) {
+	    ctx.fillStyle = "black";
+	    ctx.font = "80px serif";
+	    ctx.textAlign = "center";
+	    ctx.fillText("✕", 681, 210 + id * 70, 60, 60); 
+	}
 	ctx.fillStyle = "white";
 	ctx.font = "20px serif";
 	ctx.textAlign = "left";
