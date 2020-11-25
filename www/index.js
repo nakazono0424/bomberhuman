@@ -2,8 +2,6 @@ import { GameData } from "bomber-human-test";
 
 const debug = false
 
-let gamedata = GameData.new(3);
-
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
         this.up = key1;
@@ -30,16 +28,6 @@ function pushKey(keys, key, repeat){
 function popKey(keys, key){
     put_keys = keys.filter(e => e !== key);
 }
-
-var put_keys = [];
-var key_bind = [];
-key_bind[0] = new Key("ArrowUp","ArrowLeft","ArrowDown","ArrowRight"," ",0);
-key_bind[1] = new Key("w","a","s","d","x",1);
-key_bind[2] = new Key("t","f","g","h","b",2);
-key_bind[3] = new Key("i","j","k","l",",",3);
-
-document.addEventListener('keydown', e => pushKey(put_keys, e.key, e.repeat));
-document.addEventListener('keyup', e => popKey(put_keys, e.key));
 
 //Gameloop
 let start = null;
@@ -94,8 +82,6 @@ let drawAndUpdate = (timestamp) => {
     requestAnimationFrame(drawAndUpdate);
 };
 
-var num_of_player = 4;
-var continueFlag = true
 window.main = function(){
     if (continueFlag){
         if (document.getElementById("radio1").checked){
@@ -125,3 +111,17 @@ window.reset = function(){
     }
     gamedata = GameData.new(num_of_player);
 }
+
+var put_keys = [];
+var key_bind = [];
+key_bind[0] = new Key("ArrowUp","ArrowLeft","ArrowDown","ArrowRight"," ",0);
+key_bind[1] = new Key("w","a","s","d","x",1);
+key_bind[2] = new Key("t","f","g","h","b",2);
+key_bind[3] = new Key("i","j","k","l",",",3);
+
+document.addEventListener('keydown', e => pushKey(put_keys, e.key, e.repeat));
+document.addEventListener('keyup', e => popKey(put_keys, e.key));
+
+let gamedata = null;
+var num_of_player = 4;
+var continueFlag = true
