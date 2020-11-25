@@ -2,25 +2,10 @@ import { GameData } from "bomber-human-test";
 
 const debug = false
 
-//var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
+var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
 
-//if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
-//    num_of_player = 4;
-//}
-var num_of_player = 4;
-
-document.getElementById('two').onclick = function(){
-    console.log("test");
-    num_of_player = 2;
-    gamedata = GameData.new(num_of_player);
-}
-document.getElementById('three').onclick = function(){
-    num_of_player = 3;
-    gamedata = GameData.new(num_of_player);
-}
-document.getElementById('four').onclick = function(){
+if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
     num_of_player = 4;
-    gamedata = GameData.new(num_of_player);
 }
 
 let gamedata = GameData.new(num_of_player);
