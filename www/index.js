@@ -1,115 +1,44 @@
 import { GameData } from "bomber-human-test";
 
-const debug = true
+const debug = false
 
 let gamedata = GameData.new();
 
-//function processKey(key, b) {
-//    switch (key) {
-//    case "ArrowUp":
-//	gamedata.toggle_move_up(0, b);
-//	break;
-//    case "ArrowDown":
-//	gamedata.toggle_move_down(0, b);
-//	break;
-//    case "ArrowRight":
-//	gamedata.toggle_move_right(0, b);
-//	break;
-//    case "ArrowLeft":
-//	gamedata.toggle_move_left(0, b);
-//	break;
-//    case " ":
-//	gamedata.toggle_put_bomb(0, b);
-//	break;
-//    case "w":
-//	gamedata.toggle_move_up(1, b);
-//	break;
-//    case "s":
-//	gamedata.toggle_move_down(1, b);
-//	break;
-//    case "d":
-//	gamedata.toggle_move_right(1, b);
-//	break;
-//    case "a":
-//	gamedata.toggle_move_left(1, b);
-//	break;
-//    case "x":
-//	gamedata.toggle_put_bomb(1, b);
-//	break;
-//    case "t":
-//	gamedata.toggle_move_up(2, b);
-//	break;
-//    case "g":
-//	gamedata.toggle_move_down(2, b);
-//	break;
-//    case "h":
-//	gamedata.toggle_move_right(2, b);
-//	break;
-//    case "f":
-//	gamedata.toggle_move_left(2, b);
-//	break;
-//    case "b":
-//	gamedata.toggle_put_bomb(2, b);
-//	break;
-//    case "i":
-//	gamedata.toggle_move_up(3, b);
-//	break;
-//    case "k":
-//	gamedata.toggle_move_down(3, b);
-//	break;
-//    case "l":
-//	gamedata.toggle_move_right(3, b);
-//	break;
-//    case "j":
-//	gamedata.toggle_move_left(3, b);
-//	break;
-//    case ",":
-//	gamedata.toggle_put_bomb(3, b);
-//	break;
-//    case "0":
-//    gamedata.delete_wall(debug);
-//    break;
-//    case "9":
-//    gamedata.delete_sblock(debug);
-//    break;
-//    }
-//}
-
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
-        var up = key1;
-        var left = key2;
-        var down = key3;
-        var right = key4;
-        var put_bomb = key5;
-        var player_num = num;
+        this.up = key1;
+        this.left = key2;
+        this.down = key3;
+        this.right = key4;
+        this.put_bomb = key5;
+        this.player_num = num;
     }
-    scan(){
-        for (key of put_keys){
-            if (key == up){
-                gamedata.toggle_move_up(player_num, true);
+    scan(keys){
+        for (var key of keys){
+            if (key == this.up){
+                gamedata.toggle_move_up(this.player_num, true);
             }else{
-                gamedata.toggle_move_up(player_num, false);
+                gamedata.toggle_move_up(this.player_num, false);
             }
-            if (key == left){
-                gamedata.toggle_move_left(player_num, true);
+            if (key == this.left){
+                gamedata.toggle_move_left(this.player_num, true);
             }else{
-                gamedata.toggle_move_left(player_num, false);
+                gamedata.toggle_move_left(this.player_num, false);
             }
-            if (key == down){
-                gamedata.toggle_move_down(player_num, true);
+            if (key == this.down){
+                gamedata.toggle_move_down(this.player_num, true);
             }else{
-                gamedata.toggle_move_down(player_num, false);
+                gamedata.toggle_move_down(this.player_num, false);
             }
-            if (key == right){
-                gamedata.toggle_move_right(player_num, true);
+            if (key == this.right){
+                gamedata.toggle_move_right(this.player_num, true);
             }else{
-                gamedata.toggle_move_right(player_num, false);
+                gamedata.toggle_move_right(this.player_num, false);
             }
-            if (key == put_bomb){
-                gamedata.toggle_put_bomb(player_num, true);
+            if (key == this.put_bomb){
+                gamedata.toggle_put_bomb(this.player_num, true);
             }else{
-                gamedata.toggle_put_bomb(player_num, false);
+                gamedata.toggle_put_bomb(this.player_num, false);
             }
         }
     }
@@ -150,7 +79,7 @@ let drawAndUpdate = (timestamp) => {
 
 	var i;
     for (i = 0; i < 4; i++) {
-        key_bind[i].scan;
+        key_bind[i].scan(put_keys);
     }
     if(navigator.getGamepads) {
 	    var gamepad_list = navigator.getGamepads();
@@ -174,7 +103,6 @@ let drawAndUpdate = (timestamp) => {
     //Update and draw
     let progress = (timestamp - prevTimestamp) / 1000;
     gamedata.update(progress);
-
     gamedata.draw();
 
     //Some bookkeeping
