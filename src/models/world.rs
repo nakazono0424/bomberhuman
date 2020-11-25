@@ -17,7 +17,7 @@ pub struct World {
 }
 
 impl World {
-    pub fn new(width: f64, height: f64) -> World {
+    pub fn new(width: f64, height: f64, num_of_player: i32) -> World {
         let mut map = [
             // 0 = No SoftBlock, 1 = Wall, 2 = SoftBlock(Random)
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -91,13 +91,35 @@ impl World {
             }
         }
 
+        let mut player = vec![];
+
+        match num_of_player {
+            1 => player = vec![Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT)],
+            2 => {
+                player = vec![
+                    Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT),
+                    Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
+                ]
+            }
+            3 => {
+                player = vec![
+                    Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT),
+                    Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
+                    Player::new(2, 540.0, 60.0, SPEED, BOMB_LIMIT),
+                ]
+            }
+            4 | _ => {
+                player = vec![
+                    Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT),
+                    Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
+                    Player::new(2, 540.0, 60.0, SPEED, BOMB_LIMIT),
+                    Player::new(3, 60.0, 460.0, SPEED, BOMB_LIMIT),
+                ]
+            }
+        };
+
         World {
-            players: vec![
-                Player::new(0, 540.0, 460.0, SPEED, BOMB_LIMIT),
-                Player::new(1, 60.0, 60.0, SPEED, BOMB_LIMIT),
-                Player::new(2, 540.0, 60.0, SPEED, BOMB_LIMIT),
-                Player::new(3, 60.0, 460.0, SPEED, BOMB_LIMIT),
-            ],
+            players: player,
             walls: wall,
             sblocks: soft_block,
             bombs: vec![],
