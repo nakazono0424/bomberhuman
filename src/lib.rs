@@ -131,16 +131,16 @@ impl GameData {
     }
 
     // for debug
-    pub fn delete_wall(&mut self, b: bool) {
-        if b {
-            self.state.world.walls.clear();
-        }
+    pub fn delete_wall(&mut self) {
+        self.state.world.walls.clear();
     }
 
-    pub fn delete_sblock(&mut self, b: bool) {
-        if b {
-            self.state.world.sblocks.clear();
-        }
+    pub fn delete_sblock(&mut self) {
+        self.state.world.sblocks.clear();
+    }
+
+    pub fn kill_player(&mut self, num: i32) {
+        self.state.world.players.retain(|player| player.id != num);
     }
 }
 
